@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https//:www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <!--    добавление общего содержимого тега head .-->
+    <th:block th:replace="layout/page-layout.html :: common-head-content"/>
+</head>
+<body>
+
+<!--Верхний блок Войти - Выйти-->
+<div>
+    <th:block  th:replace="~{layout/page-layout.html :: page-login-logout-bar}" />
+</div>
+
+<!--   Добавление фрагмента шапки-->
+<th:block  th:replace="~{layout/page-layout.html :: page-header(page='client')}" />
+
+<div class="my-main-div container-xxl align-content-center text-center">
+
+    <h1>Добавление нового клиента</h1>
+    <!--Форма добавления нового клиента-->
+    <form method="post" th:action="@{/client/new-client}" th:object="${newClient}">
+        <!--phoneNumber-->
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label" for="phone">Номер телефона: </label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" id="phone" th:field="*{phoneNumber}" required minlength="1">
+            </div>
+        </div>
+        <!--clientName-->
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label" for="clientName">Имя и Отчество клиента: </label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" id="clientName" th:field="*{clientName}" required minlength="1">
+            </div>
+        </div>
+        <!--clientLastName-->
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label" for="clientLastName">Фамилия клиента: </label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" id="clientLastName" th:field="*{clientLastName}" required minlength="1">
+            </div>
+        </div>
+<!--        clientEmail-->
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label" for="clientEmail">E-mail клиента: </label>
+            <div class="col-sm-10">
+                <input class="form-control" type="email" id="clientEmail" th:field="*{clientEmail}" required minlength="1">
+            </div>
+        </div>
+
+        <!--user-->
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label" for="login">Логин: </label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" id="login" th:field="*{user}"  required minlength="1">
+            </div>
+        </div>
+
+        <!--marketing-->
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label form-check-label" for="marketing">Присылать новости: </label>
+            <div class="col-sm-10">
+                <input class="form-control form-check-input" type="checkbox" role="switch" id="marketing" th:field="*{marketing}" >
+            </div>
+        </div>
+
+        <!--Кнопки-->
+        <div class="mb-3 row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-5">
+                <button class="btn btn-success form-control">Сохранить</button>
+            </div>
+            <div class="col-sm-5">
+                <a th:href="@{/client}" class="btn btn-danger form-control">Отменить</a>
+            </div>
+        </div>
+
+    </form>
+
+    <!--           добавление кртинки контента после основного контента -->
+    <div>
+        <th:block th:replace="~{layout/page-layout.html :: content-image}" />
+    </div>
+</div>
+
+
+<!--Добавление фрагмента футера-->
+<th:block th:replace="~{layout/page-layout.html :: page-footer}" />
+
+
+</body>
+</html>

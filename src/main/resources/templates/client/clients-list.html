@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https//:www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <!--    добавление общего содержимого тега head .-->
+    <th:block th:replace="~{layout/page-layout.html :: common-head-content}"/>
+</head>
+
+<body>
+
+<!--Верхний блок Войти - Выйти-->
+<div>
+    <th:block  th:replace="~{layout/page-layout.html :: page-login-logout-bar}" />
+</div>
+
+<!--   Добавление фрагмента шапки-->
+<th:block  th:replace="~{layout/page-layout.html :: page-header(page='client')}" />
+
+<div class="my-main-div container-xxl text-center" >
+
+    <h1>Список клиентов</h1>
+    <!--Сообщение об ошибке -->
+    <p th:if="${errorMessage != null}" class="alert alert-danger">
+        [[${errorMessage}]]
+    </p>
+    <!--Сообщение об успешном выполнении операции -->
+    <p th:if="${successMessage != null}" class="alert alert-success">
+        [[${successMessage}]]
+    </p>
+
+    <!--    Вывод клиентов в виде таблицы-->
+    <table class="table table-secondary table-bordered">
+        <!--        Шапка таблицы-->
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Номер Телефона</th>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>E-Mail</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <!--        Тело таблицы-->
+        <tbody>
+        <tr th:each="client: ${clients}">
+            <td>[[${client.id}]]</td>
+            <td>
+                <a th:href="@{'/client/' + ${client.id}}">[[${client.phoneNumber}]]</a>
+            </td>
+            <td>[[${client.clientName}]]</td>
+            <td>[[${client.clientLastName}]]</td>
+            <td>[[${client.clientEmail}]]</td>
+            <td>
+
+                <a th:href="@{'/client/update/' + ${client.id}}" class="btn btn-primary">Редактировать</a>
+            </td>
+        </tr>
+
+        <tr th:if="${clients == null}">
+            <td colspan="6">На данный момент в базе данных нет записей о клиентах.</td>
+        </tr>
+        </tbody>
+    </table>
+    <div >
+        <a th:href="@{/login}" class="btn btn-success form-control mb-3">Добавить клиента</a>
+    </div>
+
+
+    <!--           добавление кртинки контента после основного контента -->
+    <div>
+        <th:block th:replace="layout/page-layout.html :: content-image" />
+    </div>
+</div>
+
+<!--Добавление фрагмента футера-->
+<th:block th:replace="layout/page-layout.html :: page-footer" />
+
+</body>
+</html>

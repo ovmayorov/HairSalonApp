@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https//:www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+  <!--    добавление общего содержимого тега head .-->
+  <th:block th:replace="~{layout/page-layout.html :: common-head-content}"/>
+</head>
+
+<body>
+
+<!--Верхний блок Войти - Выйти-->
+<div>
+  <th:block th:replace="~{layout/page-layout.html :: page-login-logout-bar}"/>
+</div>
+
+<!--   Добавление фрагмента шапки-->
+<th:block th:replace="~{layout/page-layout.html :: page-header(page='order')}"/>
+
+<div class="my-main-div container-xxl text-center">
+
+  <h1>Просроченные заказы</h1>
+
+  <div class="d-grid float-start mb-2 gap-2 d-md-block">
+    <a th:href="@{/order/today}" class="btn btn-sm btn-outline-success ">Заказы на сегодня</a>
+    <a th:href="@{/order/late}" class="btn btn-sm btn-danger ">Просроченные</a>
+    <a th:href="@{/order}" class="btn btn-sm btn-outline-primary ">Все заказы</a>
+    <a th:href="@{/order/done}" class="btn btn-sm btn-outline-primary ">Выполненные</a>
+    <a th:href="@{/order/canceled}" class="btn btn-sm btn-outline-primary ">Отмененные</a>
+    <a th:href="@{/order/future}" class="btn btn-sm btn-outline-primary ">Ближайшие</a>
+    <!--        mb-3 float-start me-2-->
+  </div>
+
+  <!--Сообщение об ошибке -->
+  <p th:if="${errorMessage != null}" class="alert alert-danger">
+    [[${errorMessage}]]
+  </p>
+  <!--Сообщение об успешном выполнении операции -->
+  <p th:if="${successMessage != null}" class="alert alert-success">
+    [[${successMessage}]]
+  </p>
+
+  <!--    Вывод заказов в виде таблицы-->
+  <table class="table table-secondary table-bordered">
+    <!--        Шапка таблицы-->
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Дата заказа</th>
+      <th>Дата и время выполниния</th>
+      <th>Клиент</th>
+      <th>Мастер</th>
+      <th>Цена</th>
+      <th>Действия</th>
+    </tr>
+    </thead>
+    <!--        Тело таблицы-->
+    <tbody>
+    <tr th:each="order: ${orders}">
+      <td th:if="${order.status.ordinal==0}">
+        <a th:href="@{'/order/' + ${order.id}}" style="color: black">[[${order.id}]]</a>
+      </td>
+      <td th:if="${order.status.ordinal==1}" class="bg-success text-light">
+        <a th:href="@{'/order/' + ${order.id}}" style="color: black">[[${order.id}]]</a>
+      </td>
+      <td th:if="${order.status.ordinal==2}" class="bg-danger text-light">
+        <a th:href="@{'/order/' + ${order.id}}" style="color: black">[[${order.id}]]</a>
+      </td>
+
+      <td>[[${order.getFormattedOrderDate()}]]</td>
+      <td>[[${order.getFormattedServiceDateTime()}]]</td>
+
+      <td>[[${order.client.clientName}]] [[${order.client.clientLastName}]]</td>
+      <td>[[${order.master.name}]] [[${order.master.lastName}]]</td>
+      <td>[[${order.totalPrice}]]</td>
+      <td>
+        <a th:if="${order.status.ordinal ==0 }" th:href="@{'/order/status-done/' + ${order.id}} "
+           class="btn btn-sm btn-success">Оплачено</a>
+        <a th:if="${order.status.ordinal ==0 }" th:href="@{'/order/status-canceled/' + ${order.id}} "
+           class="btn btn-sm btn-danger">Отмена</a>
+        <a th:if="${order.status.ordinal !=1 }" th:href="@{'/order/update/' + ${order.id}}"
+           class="btn btn-sm btn-primary">Редактировать</a>
+      </td>
+    </tr>
+
+    <tr th:if="${orders == null}">
+      <td colspan="7">На данный момент в базе данных нет записей о заказах.</td>
+    </tr>
+    </tbody>
+  </table>
+  <div>
+    <a th:href="@{/order/new-order}" class="btn btn-success form-control mb-3">Добавить заказ</a>
+  </div>
+
+  <!--           добавление кртинки контента после основного контента -->
+
+  <th:block th:replace="~{layout/page-layout.html :: content-image}"/>
+
+</div>
+
+<!--Добавление фрагмента футера-->
+<th:block th:replace="~{layout/page-layout.html :: page-footer}"/>
+
+<!--    <script src="./js/main.js"></script>-->
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https//:www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <!--    добавление общего содержимого тега head .-->
+    <th:block th:replace="~{layout/page-layout.html :: common-head-content}"/>
+</head>
+<body>
+
+<!--Верхний блок Войти - Выйти-->
+<div>
+    <th:block  th:replace="~{layout/page-layout.html :: page-login-logout-bar}" />
+</div>
+
+<!--   Добавление фрагмента шапки-->
+<th:block  th:replace="~{layout/page-layout.html :: page-header(page='order')}" />
+
+<div class="my-main-div container-xxl align-content-center text-center">
+
+    <!--Сообщение об ошибке -->
+    <p th:if="${errorMessage != null}" class="alert alert-danger">
+        [[${errorMessage}]]
+    </p>
+    <!--Сообщение об успешном выполнении операции -->
+    <p th:if="${successMessage != null}" class="alert alert-success">
+        [[${successMessage}]]
+    </p>
+
+    <h1>Добавить услугу в заказ</h1>
+    <!--Форма добавления услуги в заказ-->
+    <form method="post" th:action="@{/order-service}" th:object="${orderedService}">
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label" for="order">Заказ:</label>
+            <div class="col-sm-10">
+                <select class="form-select" id="order" th:field="*{order}">
+                    <option th:each="order : ${orders}" th:value="${order.id}">
+                        Заказ № [[${order.id}]] Клиент: [[${order.client.clientName}]] [[${order.client.clientLastName}]]
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label" for="hairService">Услуга:</label>
+            <div class="col-sm-10">
+                <select class="form-select" id="hairService" th:field="*{hairService}">
+                    <option th:each="hairService : ${hairServices}" th:value="${hairService.id}">
+                        [[${hairService.hairServiceName}]] [[${hairService.price}]] р.
+                    </option>
+                </select>
+            </div>
+        </div>
+
+
+        <!--Кнопки-->
+        <div class="mb-3 row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-5">
+                <button class="btn btn-success form-control">Сохранить</button>
+            </div>
+            <div class="col-sm-5">
+                <a th:href="@{/services}" class="btn btn-danger form-control">Отменить</a>
+
+            </div>
+        </div>
+
+    </form>
+
+    <!--           добавление кртинки контента после основного контента -->
+    <div>
+        <th:block th:replace="~{layout/page-layout.html :: content-image}" />
+    </div>
+</div>
+
+
+<!--Добавление фрагмента футера-->
+<th:block th:replace="~{layout/page-layout.html :: page-footer}" />
+
+
+</body>
+</html>

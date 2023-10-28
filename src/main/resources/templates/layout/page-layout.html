@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https//:www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<!--Фрагмент общего содержимого тегаа head .-->
+<th:block th:fragment="common-head-content">
+
+    <meta charset="UTF-8">
+
+    <title>ЁЖИК</title>
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">-->
+
+    <!-- add icon link -->
+    <link rel = "icon" th:href = "@{/images/hair_salon_logo.png}"
+          type = "image/x-icon">
+
+
+    <!-- Подключение Bootstrap JavaScript-->
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"> </script>
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>-->
+
+<!--    Подключение css файлов-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/background.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/css.css}">
+</th:block>
+
+<!--Верхний блок Войти - Выйти-->
+<div th:fragment="page-login-logout-bar" class="container-xxl text-end" >
+
+    <div sec:authorize="!isAuthenticated()" class=" mt-2  bg-body-secondary text-black border rounded-2 p-1 text-end">
+        <form  class="d-flex justify-content-end" role="search" method="post" th:action="@{/login}">
+            <button class="btn btn-sm btn-outline-success">ВОЙТИ / РЕГИСТРАЦИЯ</button>
+        </form>
+    </div>
+    <div sec:authorize="isAuthenticated()" class=" mt-2  bg-body-secondary text-black border rounded-2 p-1 text-end">
+
+
+        <form  class="d-flex justify-content-end" role="search" method="post" th:action="@{/logout}">
+            <span>Добро пожаловать:&nbsp; </span>
+            <span sec:authorize="isAuthenticated()" th:text="${#authentication.getPrincipal.getUsername()   }"></span>
+<!--            <span sec:authorize="isAuthenticated()" th:text="${#authentication.getPrincipal.getClient.get   }"></span>-->
+            <span>&nbsp;</span>
+            <button class="btn btn-sm btn-outline-success">ВЫЙТИ</button>
+        </form>
+    </div>
+</div>
+
+<!--Шапка приложения-->
+<header th:fragment="page-header" class="container-xxl text-center mb-2 mt-2">
+
+    <!--    Навигационная панель  - меню сайта-->
+    <nav class="navbar navbar-expand-lg bg-body-secondary text-black border rounded-2">
+        <div class="container-fluid">
+            <a class="navbar-brand " th:href="@{/}">
+                <img th:src="@{/images/hair_salon_logo.png}" class="img-fluid" alt="logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link " th:classappend="${page=='index'? 'active':''}" aria-current="page" th:href="@{/}"><b>Главная</b></a>
+                    <a class="nav-link " th:classappend="${page=='services'? 'active':''}"  th:href="@{/services}"><b>Услуги</b></a>
+                    <a sec:authorize="hasRole('ADMIN')" class="nav-link " th:classappend="${page=='client'? 'active':''}"  th:href="@{/client}"><b>Клиенты</b></a>
+                    <a class="nav-link " th:classappend="${page=='master'? 'active':''}"  th:href="@{/master}"><b>Мастера</b></a>
+                    <a sec:authorize="hasRole('USER')" class="nav-link " th:classappend="${page=='order'? 'active':''}"  th:href="@{/order/client}"><b>Мои Заказы</b></a>
+                    <a sec:authorize="hasRole('ADMIN')" class="nav-link " th:classappend="${page=='order'? 'active':''}"  th:href="@{/order/today}"><b>Заказы</b></a>
+<!--                    <a class="nav-link" href="#">Pricing</a>-->
+<!--                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>-->
+
+
+                </div>
+
+            </div>
+<!--            <form class="d-flex" role="search" method="post" th:action="@{/logout}">-->
+<!--                <button class="btn btn-outline-success">Выйти</button>-->
+<!--            </form>-->
+        </div>
+    </nav>
+</header>
+
+<!--Картинка с инструментами под контентом до футера-->
+<div th:fragment="content-image" class="m-0">
+    <img th:src="@{/images/tools.jpg}" class="img-fluid" alt="tools">
+</div>
+<!--class="container-xxl text-center"-->
+
+<!--Модальное окно для создания логина и пароля для нового пользователя-->
+<div th:fragment="registerModalWindow" class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Создание Логина и Пароля</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" th:action="@{/register}">
+                        <div class="mb-3 row">
+                            <label for="new-login" class="col-sm-2 col-form-label">Логин</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="new-login" name="login">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="new-password" class="col-sm-2 col-form-label">Пароль</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="new-password" name="password">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="new-password-confirmation" class="col-sm-2 col-form-label">Подтвердите Пароль</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="new-password-confirmation"
+                                       name="passwordConfirmation">
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row col-6 mx-auto">
+                            <button type="button" class="btn btn-success btn-sm">Зарегистрироваться</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+                </div>
+            </div>
+        </div>
+</div>
+
+<!--Футер приложения-->
+<footer th:fragment="page-footer" class="container-xxl text-center ">
+<!--    fixed-bottom-->
+<!--    <div class="mt-5">-->
+<!--        <img th:src="@{/images/tools.jpg}" class="img-fluid" alt="tools">-->
+<!--    </div>-->
+    <p class="card-text">
+    <h5 class="border border-info-subtle rounded-2 text-body-secondary  p-2 mt-4 mb-3 ">Приложение для оформления записи к парикмахеру.    Автор Майоров О.В. &copy2023 </h5>
+    </p>
+</footer>
+</body>
+</html>

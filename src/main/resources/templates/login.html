@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https//:www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--    добавление общего содержимого тега head .-->
+    <th:block th:replace="~{layout/page-layout.html :: common-head-content}"/>
+
+</head>
+
+<body>
+<!--Работает:-->
+<!--<body th:style="'background-image:url(' + @{/images/scissors-old.jpg} + '); background-repeat: no-repeat, repeat; background-size: cover;'">-->
+<!--<div class="container-xxl text-center" >-->
+
+
+<!--Верхний блок Войти - Выйти-->
+<div>
+    <th:block  th:replace="~{layout/page-layout.html :: page-login-logout-bar}" />
+</div>
+
+<!--   Добавление фрагмента шапки-->
+<div>
+    <th:block th:replace="~{layout/page-layout.html :: page-header(page='index')}"/>
+</div>
+
+
+
+
+<!--    Тело сайта-->
+<div class="my-main-div container-xxl text-center">
+
+    <!--Сообщение об ошибке -->
+    <p th:if="${errorMessage != null}" class="alert alert-danger">
+        [[${errorMessage}]]
+    </p>
+    <!--Сообщение об успешном выполнении операции -->
+    <p th:if="${successMessage != null}" class="alert alert-success">
+        [[${successMessage}]]
+    </p>
+
+    <!-- форма логина -->
+    <div class="container-xl mb-3 row col-4 mx-auto">
+
+        <form method="post" th:action="@{/login}">
+            <div class="mb-3 row">
+                <label for="login" class="col-sm-2 col-form-label">Логин</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="login" name="username">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="password" class="col-sm-2 col-form-label">Пароль</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password" name="password">
+                </div>
+            </div>
+
+            <div class="mb-3 row col-4 mx-auto">
+                <button class="btn btn-success btn-sm">Войти</button>
+            </div>
+        </form>
+
+
+    </div>
+
+    <div class="mb-4 bg-body-secondary text-black border rounded-2 p-2 text-center">
+        <h4>Впервые у нас? Зарегистрируйтесь:</h4>
+    </div>
+
+
+
+    <!-- форма регистрации нового клиента -->
+    <div class="container-xl mb-3 row col-6 mx-auto">
+
+        <form method="post" th:action="@{/register}">
+            <div class="mb-3 row">
+                <label for="new-login" class="col-sm-2 col-form-label">Логин</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="new-login" name="login">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="new-password" class="col-sm-2 col-form-label">Пароль</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="new-password" name="password">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="new-password-confirmation" class="col-sm-2 col-form-label">Подтвердите Пароль</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="new-password-confirmation"
+                           name="passwordConfirmation">
+                </div>
+            </div>
+
+            <div class="mb-3 row col-6 mx-auto">
+                <button class="btn btn-success btn-sm">Зарегистрироваться</button>
+            </div>
+        </form>
+    </div>
+
+
+
+    <!--           добавление кртинки контента после основного контента -->
+    <div>
+        <th:block th:replace="~{layout/page-layout.html :: content-image}"/>
+    </div>
+
+</div>
+
+<!--Добавление фрагмента футера-->
+<div>
+    <th:block th:replace="~{layout/page-layout.html :: page-footer}"/>
+</div>
+
+<!--Модальное окно для создания логина и пароля для нового пользователя-->
+<!--<div>-->
+<!--    <th:block th:replace="layout/page-layout.html :: registerModalWindow"/>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    $(document).ready(function () {-->
+<!--        $('#registerModal').modal('show');-->
+<!--    });-->
+<!--</script>-->
+</body>
+</html>

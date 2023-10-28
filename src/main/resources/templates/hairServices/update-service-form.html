@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https//:www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <!--    добавление общего содержимого тега head .-->
+    <th:block th:replace="layout/page-layout.html :: common-head-content"/>
+</head>
+
+<body>
+
+<!--Верхний блок Войти - Выйти-->
+<div>
+    <th:block  th:replace="~{layout/page-layout.html :: page-login-logout-bar}" />
+</div>
+
+<!--   Добавление фрагмента шапки-->
+<th:block  th:replace="layout/page-layout.html :: page-header(page='services')" />
+
+<div class="my-main-div container-xxl align-content-center text-center">
+
+
+
+    <h1>Редактирование услуги</h1>
+    <!--Форма добавления новой услуги-->
+    <form method="post" th:action="@{'/services/update/' + ${hairServiceUpdate.id}}" th:object="${hairServiceUpdate}">
+<!--        &lt;!&ndash; id должен быть полем формы, т.к. обьект будет пересоздаваться. Иначе он останется пустым &ndash;&gt;-->
+<!--        <div class="mb-3 row">-->
+<!--            <label class="col-sm-2 col-form-label" for="serviceID">ID: </label>-->
+<!--            <div class="col-sm-10">-->
+<!--                <input class="form-control" type="text" id="serviceID" th:field="*{id}" required minlength="1">-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <!--hairServiceName-->
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label" for="name">Название услуги: </label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" id="name" th:field="*{hairServiceName}" required minlength="1">
+            </div>
+        </div>
+        <!--shortDescription-->
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label" for="shortDescription">Краткое описание услуги: </label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" id="shortDescription" th:field="*{shortDescription}" required minlength="1">
+            </div>
+        </div>
+        <!--description-->
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label" for="description">Подробное описание услуги: </label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" id="description" th:field="*{description}" required minlength="1">
+            </div>
+        </div>
+        <!--price-->
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label" for="price">Стоимость услуги: </label>
+            <div class="col-sm-10">
+                <input class="form-control" type="number" id="price" th:field="*{price}" required minlength="1">
+            </div>
+        </div>
+
+        <!--Кнопки-->
+        <div class="mb-3 row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-5">
+                <button class="btn btn-success form-control">Сохранить</button>
+            </div>
+            <div class="col-sm-5">
+                <a th:href="@{/services}" class="btn btn-danger form-control">Отменить</a>
+            </div>
+        </div>
+
+    </form>
+
+    <!--           добавление кртинки контента после основного контента -->
+    <div>
+        <th:block th:replace="layout/page-layout.html :: content-image" />
+    </div>
+</div>
+<!--Добавление фрагмента футера-->
+<th:block th:replace="layout/page-layout.html :: page-footer" />
+
+</body>
+</html>

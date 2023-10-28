@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https//:www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--    добавление общего содержимого тега head .-->
+    <th:block th:replace="~{layout/page-layout.html :: common-head-content}"/>
+
+</head>
+
+<body>
+<!--Работает:-->
+<!--<body th:style="'background-image:url(' + @{/images/scissors-old.jpg} + '); background-repeat: no-repeat, repeat; background-size: cover;'">-->
+
+<!--Верхний блок Войти - Выйти-->
+<div>
+    <th:block  th:replace="~{layout/page-layout.html :: page-login-logout-bar}" />
+</div>
+
+        <!--   Добавление фрагмента шапки-->
+        <div>
+            <th:block  th:replace="~{layout/page-layout.html :: page-header(page='index')}" />
+        </div>
+
+            <!--    Тело сайта-->
+        <div class="my-main-div container-xxl text-center" >
+<!--            th:style="'height=1000px;'"-->
+<!--            <div class="mb-2 bg-body-secondary text-black border rounded-2 p-2 text-center">-->
+                <h1>ПАРИКМАХЕРСКАЯ : ЁЖИК</h1>
+<!--            </div>-->
+            <div class="mb-3 bg-body-secondary text-black border rounded-2 p-2">
+                <p class="fs-3 fw-semibold text-start " th:style="'text-indent: 60px;'">Парикмахерская "Ёжик" — место, где вы почувствуете себя в «своей компании».
+                    Помимо профессионального подхода к стрижкам, у нас создана приятная атмосфера.
+                    Мастера поддержат разговор, администратор предложит напитки, и вы обязательно захотите вернуться!</p>
+                <p class="fs-3 fw-semibold">Для удобства наших клиентов - мы работаем по предварительной записи.</p>
+            </div>
+            <div sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}" class="btn btn-success mb-3">Войти в приложение</a>
+<!--                th:href="@{'/client/update/' + ${client.id}}" class="btn btn-primary"-->
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{/order}" class="btn btn-success mb-3">Записаться</a>
+                <a sec:authorize="hasRole('USER')" th:href="@{/order/client}" class="btn btn-success mb-3">Записаться</a>
+                <!--                th:href="@{'/client/update/' + ${client.id}}" class="btn btn-primary"-->
+            </div>
+
+            <!--           добавление кртинки контента после основного контента -->
+            <div>
+                <th:block th:replace="~{layout/page-layout.html :: content-image}" />
+            </div>
+        </div>
+
+
+
+            <!--Добавление фрагмента футера-->
+        <div>
+            <th:block th:replace="~{layout/page-layout.html :: page-footer}" />
+        </div>
+
+
+<!--Модальное окно для создания логина и пароля для нового пользователя-->
+<!--<div>-->
+<!--    <th:block th:replace="layout/page-layout.html :: registerModalWindow"/>-->
+<!--</div>-->
+
+<style>
+    .description {
+        background-color: lightgray;
+        /*border: 1px solid grey;*/
+        border-radius: 10px;
+    }
+</style>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https//:www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <!--    добавление общего содержимого тега head .-->
+    <th:block th:replace="layout/page-layout.html :: common-head-content"/>
+</head>
+<body>
+
+<!--Верхний блок Войти - Выйти-->
+<div>
+    <th:block  th:replace="~{layout/page-layout.html :: page-login-logout-bar}" />
+</div>
+
+<!--   Добавление фрагмента шапки-->
+<th:block  th:replace="layout/page-layout.html :: page-header(page='services')" />
+
+<div class="my-main-div container-xxl" >
+
+
+
+
+    <!--Вывод информации об обьекте. Об одной услуге -->
+    <div class="card mb-3">
+        <h5 class="card-header bg-primary-subtle"> Информация об услуге  </h5>
+        <div th:if="${hairServiceDetails != null}" class="card-body">
+            <h5 class="card-title">[[${hairServiceDetails.hairServiceName}]]</h5>
+            <p class="card-text">[[${hairServiceDetails.description}]]</p>
+            <a th:href="@{/services}" class="btn btn-primary">Вернуться в каталог услуг</a>
+        </div>
+
+        <div th:if="${hairServiceDetails == null}" class="card-body">
+            <h5 class="card-title bg-danger text-light">Информация об услуге не найдена</h5>
+
+            <a th:href="@{/services}" class="btn btn-primary">Вернуться в каталог услуг</a>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+<!--           добавление кртинки контента после основного контента -->
+<div>
+    <th:block th:replace="layout/page-layout.html :: content-image" />
+</div>
+
+<!--Добавление фрагмента футера-->
+<th:block th:replace="layout/page-layout.html :: page-footer" />
+</body>
+</html>

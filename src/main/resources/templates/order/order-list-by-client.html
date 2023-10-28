@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https//:www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+  <!--    добавление общего содержимого тега head .-->
+  <th:block th:replace="~{layout/page-layout.html :: common-head-content}"/>
+</head>
+
+<body>
+
+<!--Верхний блок Войти - Выйти-->
+<div>
+  <th:block  th:replace="~{layout/page-layout.html :: page-login-logout-bar}" />
+</div>
+
+<!--   Добавление фрагмента шапки-->
+<th:block  th:replace="~{layout/page-layout.html :: page-header(page='order')}" />
+
+<div class="my-main-div container-xxl text-center" >
+
+  <h1>Список заказов</h1>
+  <!--Сообщение об ошибке -->
+  <p th:if="${errorMessage != null}" class="alert alert-danger">
+    [[${errorMessage}]]
+  </p>
+  <!--Сообщение об успешном выполнении операции -->
+  <p th:if="${successMessage != null}" class="alert alert-success">
+    [[${successMessage}]]
+  </p>
+
+  <!--    Вывод заказов в виде таблицы-->
+  <table class="table table-secondary table-bordered">
+    <!--        Шапка таблицы-->
+    <thead>
+    <tr>
+      <th>№№</th>
+      <th>Дата заказа</th>
+      <th>Дата и время выполниния заказа</th>
+      <th>Клиент</th>
+      <th>Мастер</th>
+      <th>Цена</th>
+      <th>Действия</th>
+    </tr>
+    </thead>
+    <!--        Тело таблицы-->
+    <tbody>
+    <tr th:each="order: ${clientOrders}">
+      <td th:if="${order.status.ordinal==0}">
+          <a   th:href="@{'/order/' + ${order.id}}" style="color: black">[[${order.id}]]</a>
+      </td>
+      <td th:if="${order.status.ordinal==1}" class="bg-success text-light">
+        <a   th:href="@{'/order/' + ${order.id}}" style="color: black">[[${order.id}]]</a>
+      </td>
+      <td th:if="${order.status.ordinal==2}" class="bg-danger text-light">
+        <a   th:href="@{'/order/' + ${order.id}}" style="color: black">[[${order.id}]]</a>
+      </td>
+
+      <td>[[${order.getFormattedOrderDate()}]]</td>
+      <td>[[${order.getFormattedServiceDateTime()}]]</td>
+
+      <td>[[${order.client.clientName}]] [[${order.client.clientLastName}]]</td>
+      <td>[[${order.master.name}]] [[${order.master.lastName}]]</td>
+      <td>[[${order.totalPrice}]]</td>
+      <td>
+        <a th:if="${order.status.ordinal !=1 }" th:href="@{'/order/update/' + ${order.id}}" class="btn btn-sm btn-primary">Редактировать</a>
+        <a th:if="${order.status.ordinal ==0 }" th:href="@{'/order/status-canceled-by-client/' + ${order.id}} " class="btn btn-sm btn-danger">Отмена</a>
+      </td>
+    </tr>
+
+    <tr th:if="${clientOrders == null}">
+      <td colspan="7">На данный момент в базе данных нет записей о заказах.</td>
+    </tr>
+    </tbody>
+  </table>
+  <div >
+    <a th:href="@{/order/client/new-order}" class="btn btn-success form-control mb-3">Добавить заказ</a>
+  </div>
+
+  <!--           добавление кртинки контента после основного контента -->
+
+    <th:block th:replace="layout/page-layout.html :: content-image" />
+
+</div>
+
+<!--Добавление фрагмента футера-->
+<th:block th:replace="~{layout/page-layout.html :: page-footer}" />
+
+</body>
+</html>

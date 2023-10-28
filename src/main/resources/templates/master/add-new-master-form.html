@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https//:www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+  <!--    добавление общего содержимого тега head .-->
+  <th:block th:replace="layout/page-layout.html :: common-head-content"/>
+</head>
+<body>
+
+<!--Верхний блок Войти - Выйти-->
+<div>
+  <th:block  th:replace="~{layout/page-layout.html :: page-login-logout-bar}" />
+</div>
+
+<!--   Добавление фрагмента шапки-->
+<th:block  th:replace="layout/page-layout.html :: page-header(page='master')" />
+
+<div class="my-main-div container-xxl align-content-center text-center">
+
+  <h1>Добавление нового мастера</h1>
+  <!--Форма добавления нового мастера-->
+  <form method="post" th:action="@{/master/new-master}" th:object="${newMaster}">
+    <!--phoneNumber-->
+    <div class="mb-3 row">
+      <label class="col-sm-2 col-form-label" for="phone">Номер телефона: </label>
+      <div class="col-sm-10">
+        <input class="form-control" type="text" id="phone" th:field="*{phoneNumber}" required minlength="1">
+      </div>
+    </div>
+    <!--name-->
+    <div class="mb-3 row">
+      <label class="col-sm-2 col-form-label" for="masterName">Имя и Отчество мастера: </label>
+      <div class="col-sm-10">
+        <input class="form-control" type="text" id="masterName" th:field="*{name}" required minlength="1">
+      </div>
+    </div>
+    <!--lastName-->
+    <div class="mb-3 row">
+      <label class="col-sm-2 col-form-label" for="lastName">Фамилия мастера: </label>
+      <div class="col-sm-10">
+        <input class="form-control" type="text" id="lastName" th:field="*{lastName}" required minlength="1">
+      </div>
+    </div>
+    <!--        email-->
+    <div class="mb-3 row">
+      <label class="col-sm-2 col-form-label" for="email">E-mail мастера: </label>
+      <div class="col-sm-10">
+        <input class="form-control" type="email" id="email" th:field="*{email}" required minlength="1">
+      </div>
+    </div>
+
+    <!--user-->
+    <div class="mb-3 row my-hidden-block " >
+      <label class="col-sm-2 col-form-label" for="master-login">Логин: </label>
+      <div class="col-sm-10">
+        <input class="form-control" type="text" id="master-login" th:field="*{user}" readonly required minlength="1" >
+      </div>
+    </div>
+
+    <!--Кнопки-->
+    <div class="mb-3 row">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-5">
+        <button class="btn btn-success form-control">Сохранить</button>
+      </div>
+      <div class="col-sm-5">
+        <a th:href="@{/master}" class="btn btn-danger form-control">Отменить</a>
+      </div>
+    </div>
+
+  </form>
+
+  <!--           добавление кртинки контента после основного контента -->
+  <div>
+    <th:block th:replace="layout/page-layout.html :: content-image" />
+  </div>
+</div>
+
+
+<!--Добавление фрагмента футера-->
+<th:block th:replace="layout/page-layout.html :: page-footer" />
+
+
+</body>
+</html>
